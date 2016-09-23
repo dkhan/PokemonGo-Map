@@ -31,6 +31,9 @@ def printPokemon(id, lat, lng, itime):
 
 
 def notifySlack(pokemon_name, lat, lng, itime):
+    if not args.slack_url:
+        return
+
     if pokemon_name in rare:
         channel = '#rare'
     elif pokemon_name in legend:
@@ -47,8 +50,7 @@ def notifySlack(pokemon_name, lat, lng, itime):
       'text': text,
       'icon_emoji': ':ghost:'
     })
-    url = "https://hooks.slack.com/services/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"
-    cmd = "curl -s -X POST --data-urlencode 'payload=" + payload + "' " + url + " > /dev/null"
+    cmd = "curl -s -X POST --data-urlencode 'payload=" + payload + "' " + args.slack_url + " > /dev/null"
     try:
         getstatusoutput(cmd)
     except Exception, e:

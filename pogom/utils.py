@@ -50,6 +50,8 @@ def get_args():
                         help='Auth Services, either one for all accounts or one per account: ptc or google. Defaults all to ptc.')
     parser.add_argument('-u', '--username', action='append', default=[],
                         help='Usernames, one per account.')
+    parser.add_argument('-su', '--slack-url',
+                        help='Slack URL.')
     parser.add_argument('-p', '--password', action='append', default=[],
                         help='Passwords, either single one for all accounts or one per account.')
     parser.add_argument('-w', '--workers', type=int,
