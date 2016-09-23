@@ -22,7 +22,7 @@ from cachetools import cached
 from . import config
 from .utils import get_pokemon_name, get_pokemon_rarity, get_pokemon_types, get_args
 from .transform import transform_from_wgs_to_gcj, get_new_coords
-from .customLog import printPokemon
+from .customLog import printPokemon, notifySlack
 
 log = logging.getLogger(__name__)
 
@@ -700,10 +700,10 @@ def parse_map(args, map_dict, step_location, db_update_queue, wh_update_queue):
     if len(gyms):
         db_update_queue.put((Gym, gyms))
 
-    log.info('Parsing found %d pokemons, %d pokestops, and %d gyms',
-             len(pokemons),
-             len(pokestops),
-             len(gyms))
+    # log.info('Parsing found %d pokemons, %d pokestops, and %d gyms',
+    #          len(pokemons),
+    #          len(pokestops),
+    #          len(gyms))
 
     db_update_queue.put((ScannedLocation, {0: {
         'latitude': step_location[0],
