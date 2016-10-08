@@ -22,30 +22,24 @@ def printPokemon(id, lat, lng, itime):
         pokemon_name = get_pokemon_name(id).lower()
         pokemon_rarity = get_pokemon_rarity(id).lower()
         pokemon_id = str(id)
-        if pokemon_name not in common:
+        if pokemon_name in rare:
             timeLeft = itime - datetime.utcnow()
             print("======================================\n Name: %s\n Rarity: %s\n Coord: (%f,%f)\n ID: %s \n Remaining Time: %s\n======================================" % (
                 pokemon_name.encode('utf-8'), pokemon_rarity.encode('utf-8'), lat, lng, pokemon_id, str(timeLeft)))
 
-        notifySlack(pokemon_name, lat, lng, itime)
+        if pokemon_name in legend:
+            notifySlack(pokemon_name, lat, lng, itime)
 
 
 def notifySlack(pokemon_name, lat, lng, itime):
     if not args.slack_url:
         return
 
-    if pokemon_name in rare:
-        channel = '#rare'
-    elif pokemon_name in legend:
-        channel = '#legend'
-    else:
-        return
-
     disappear_time = utc2local(itime).strftime('%Y-%m-%d %H:%M:%S')
     path = "http://maps.google.com/?q=" + str(lat) + "," + str(lng)
     text = "<" + path + "|" + pokemon_name + "> disappears @ " + disappear_time
     payload = json.dumps({
-      'channel': channel,
+      'channel': '#legend',
       'username': 'poke-notifier',
       'text': text,
       'icon_emoji': ':ghost:'
